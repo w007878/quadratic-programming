@@ -1,0 +1,79 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{ctex}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+
+\geometry{top=3cm,bottom=3cm,left=2.5cm,right=2.5cm}
+
+\begin{document}
+
+\title{数值最优化 期末作业}
+\author{15336134 莫凡}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Problem 1}
+
+\subsection{问题描述}
+
+求解二次规划问题\[\min f(x)=(x_1-1)^2+(x_2-x_3)^2+(x_4-x_5)^2\]
+\[s.t.\quad\begin{array}{rcl}
+	x_1+x_2+x_3+x_4+x_5-5 & = & 0\\
+	x_3-2(x_4+x_5)+3 & = & 0
+\end{array}\]
+
+初始点$x^{(0)}=(3, 5, -3, 2, -2)^T$为可行点，最优解$x^*=(1,1,1,1,1)^T$
+
+\subsection{变量消去法}
+
+从等式约束中可以得到\[\begin{array}{l}
+x_1=-x_2-3x_4-3x_5+8\\
+x_3=2x_4+2x_5-3
+\end{array}\]
+然后代入展开，可以得到\[f(x)=58-8x_2+2x_2^2-54x_4+2x_2x_4+14x_4^2-54x_5+2x_2x_5+24x_4x_5+14x_5^2\]
+设\[t=(x_2,x_4,x_5)^T\]
+则$\varphi(t)=f(x)$的梯度为
+\[g(t)=\begin{bmatrix}
+-8+4t_1+2t_2+2t_3\\
+-54+2t_1+28t_2+24t_3\\
+-54+2t_1+24t_2+28t_3
+\end{bmatrix}\]
+Hessian矩阵\[G=\begin{bmatrix}
+4 & 2 & 2\\
+2 & 28 & 24\\
+2 & 24 & 28
+\end{bmatrix}\]
+
+计算G的特征值为$\{2(14+\sqrt{146}),4,2(14-\sqrt{146})\}$均大于0，所以G正定，问题是严格凸二次规划，有唯一全局最优解。
+
+由一阶必要条件，最优解处一定有$g(t)=0$,解得$t=(1,1,1)^T$，代回解得$x=(1,1,1,1,1)^T$，是唯一全局最优解,$f(x)=0$
+
+\subsection{Lagrange方法}
+
+将二次规划改写为规范形式，
+\[G=\begin{bmatrix}
+1 & 0 & 0 & 0 & 0\\
+0 & 1 & -1 & 0 & 0\\
+0 & -1 & 1 & 0 & 0\\
+0 & 0 & 0 & 1 & -1\\
+0 & 0 & 0 & -1 & -1
+\end{bmatrix},~
+h=\begin{bmatrix}
+-2\\0\\0\\0\\0
+\end{bmatrix},~
+A=\begin{bmatrix}
+1 & 0\\
+1 & 0\\
+1 & 1\\
+1 & -2\\
+1 &-2
+\end{bmatrix},~
+b=\begin{bmatrix}
+5\\-3
+\end{bmatrix}\]
+
+
+\end{document}
