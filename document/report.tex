@@ -7,6 +7,8 @@
 \usepackage{graphics}
 \usepackage{clrscode3e}
 \usepackage{listings}
+\usepackage[framed,numbered,autolinebreaks,useliterate]{mcode}
+\usepackage{url,textcomp}
 
 \geometry{top=3cm,bottom=3cm,left=2.5cm,right=2.5cm}
 
@@ -81,7 +83,8 @@ b=\begin{bmatrix}
 
 后面采用零空间方法求解方向
 
-\begin{lstlisting}[MATLAB]
+\scriptsize
+\begin{lstlisting}
 % 原问题
 G = 2*[1 0 0 0 0; 0 1 -1 0 0; 0 -1 1 0 0; 0 0 0 1 -1; 0 0 0 -1 1];
 h = [-2;0;0;0;0];
@@ -104,6 +107,8 @@ x = x0 + Z * d;
 disp('x=')
 disp(x);
 \end{lstlisting}
+\normalsize
+
 \section{Problem 2}
 
 \subsection{问题描述}
@@ -120,6 +125,33 @@ x_i & \ge & 0,~~i=1,2,3
 
 \begin{codebox}
 	\Procname{Active-Set($G,h,x^{(0)}$)}
+	\li Get the initial active set $A$
+	\li Solve the problem \(\min \frac{1}{2}d^TGd+g_k^Td,\quad s.t.~~a_id=0\)\\
+		where $g_k=Gx^{(k)}+h$\\
+		get $d_k$ and $\lambda$
+	\li \If $d_k=0$ and $\lambda \ge 0$
+	\li		\Then	Break
+	\li		\Else Remove the constraints related the minimal $\lambda_i$ from active set
+	 	\End
+	\li \If $d_k\neq 0$
+	\li 	\Then $\alpha = \min (1, \{(b_i-a_ix^{(k)}/(a_i^Td_k)\})$
+	\li			 $x^{(k+1)}=x^{(k)}+\alpha d_k$
+	\li 		\Goto 2
+		\End
 \end{codebox}
+
+编程得到结果为
+
+\noindent\texttt{
+	时间已过 0.053027 秒。\\
+	迭代次数: 3\\
+	解为: xin=\\
+	1.333333\\
+	0.777778\\
+	0.444444\\
+	fmin=0.111111
+}
+
+\section{SVM}
 
 \end{document}

@@ -1,0 +1,12 @@
+tic;
+G = [4 2 2; 2 4 0; 2 0 2];
+h = [-8; -6; -4];
+A = [-1 1 0 0; -1 0 1 0; -2 0 0 1];
+b = [-3; 0; 0; 0];
+x0 = [0.5; 0.5; 0.5];
+[fval, xmin, iter] = activeset(x0, G, h, A, b);
+toc;
+fprintf('迭代次数: %d\n', iter);
+fprintf('解为: xin=\n');
+fprintf('%f\n', xmin);
+fprintf('fmin=%f\n', fval);
