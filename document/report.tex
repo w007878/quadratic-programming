@@ -4,6 +4,9 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{geometry}
+\usepackage{graphics}
+\usepackage{clrscode3e}
+\usepackage{listings}
 
 \geometry{top=3cm,bottom=3cm,left=2.5cm,right=2.5cm}
 
@@ -51,10 +54,11 @@ Hessian矩阵\[G=\begin{bmatrix}
 
 由一阶必要条件，最优解处一定有$g(t)=0$,解得$t=(1,1,1)^T$，代回解得$x=(1,1,1,1,1)^T$，是唯一全局最优解,$f(x)=0$
 
+这个问题太简单了，所以没有代码。
 \subsection{Lagrange方法}
 
 将二次规划改写为规范形式，
-\[G=\begin{bmatrix}
+\[G=2\begin{bmatrix}
 1 & 0 & 0 & 0 & 0\\
 0 & 1 & -1 & 0 & 0\\
 0 & -1 & 1 & 0 & 0\\
@@ -75,5 +79,47 @@ b=\begin{bmatrix}
 5\\-3
 \end{bmatrix}\]
 
+后面采用零空间方法求解方向
+
+\begin{lstlisting}[MATLAB]
+% 原问题
+G = 2*[1 0 0 0 0; 0 1 -1 0 0; 0 -1 1 0 0; 0 0 0 1 -1; 0 0 0 -1 1];
+h = [-2;0;0;0;0];
+A = [1 0; 1 0; 1 1; 1 -2; 1 -2];
+b = [5;-3];
+
+% 对A进行QR分解
+[Q, R] = qr(A);
+Q1 = Q(1:5, 1:2);
+Q2 = Q(1:5, 3:5);
+R1 = R(1:2, 1:2);
+
+x0 = [3; 5; -3; 2; -2];
+Z = Q2;
+A_ = Q1 * inv(R1)';
+
+d = (Z' * G * Z) \ (-Z' * (h + G * x0));
+
+x = x0 + Z * d;
+disp('x=')
+disp(x);
+\end{lstlisting}
+\section{Problem 2}
+
+\subsection{问题描述}
+
+\[\min f(x)=9-8x_1-6x_2-4x_3+2x_1^2+2x_2^2+x_3^2+2x_1x_2+2x_1x_3\]
+\[s.t.\quad\begin{array}{rcl}
+2-x_1-x_2-2x_3 & \ge & 0\\
+x_i & \ge & 0,~~i=1,2,3
+\end{array}\]
+
+初始点$x^{(0)}=(0.5,0.5,0.5)^T$为可行点，最优解为$x^*=(\frac{4}{3},\frac{7}{9},\frac{4}{9})^T$
+
+\subsection{起作用集方法}
+
+\begin{codebox}
+	\Procname{Active-Set($G,h,x^{(0)}$)}
+\end{codebox}
 
 \end{document}
