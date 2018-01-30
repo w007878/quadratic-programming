@@ -154,4 +154,53 @@ x_i & \ge & 0,~~i=1,2,3
 
 \section{SVM}
 
+\subsection{算法描述}
+
+假设存在一个超平面$W^Tx+b$，将数据分成两部分。显然，大多数情况下这样的超平面并不存在，所以我们引入了支持向量机这个东西。
+
+定义函数距离  \[\hat{\gamma_i} =  \frac{1}{\Vert w \Vert}\gamma_i\]
+
+其中$\gamma_i=y(W^Tx_i+b)$，表示样本点到超平面的函数距离
+
+显然，当w，b乘以一个任意常数，函数距离随之变化，但几何距离不变。所以可以通过放缩使得最小函数距离为1，问题转化为：
+
+\[\max \hat{\gamma}\]
+\[s.t.\quad y_i(W^Tx_i+b) \ge 1 \quad i=1,2,\cdots,m\]
+
+显然最小几何距离实际等于w的模长的倒数，得到如下等价的凸二次规划问题
+\[\min \frac{1}{2}W^TW \]
+\[s.t.\quad y_i(W^Tx_i+b) \ge 1\quad i=1,2,\cdots,m \]
+
+采用$l1$正则化，处理离群点，同时防止过拟合问题：
+\[\min \frac{1}{2}w^Tw+\alpha\sum_{i=1}^{m}\xi_i \]
+\[s.t.\quad\begin{array}{rclr}
+y(W^Tx_i+b) & \ge & 1-\xi_i & i=1,2,\cdots,m\\
+\xi_i & \ge & 0 & i=1,2,\cdots,m
+\end{array}
+\]
+
+直接将上述问题改写为二次规划并调用之前的算法即可
+
+\subsection{Problem SVM 1}
+
+运行程序得到结果
+
+\noindent\texttt{
+number of iterations： 24\\
+train accuracy：0.856884\\
+test accuracy：0.855072	
+}
+
+\subsection{Problem SVM 2}
+
+运行程序得到结果
+
+\noindent\texttt{
+number of iterations： 9\\
+train accuracy：0.789157\\
+test accuracy：0.809524
+}
+
+具体见程序
+
 \end{document}
